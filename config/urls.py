@@ -18,6 +18,8 @@ from django.urls import include, path
 from pybo import views
 
 urlpatterns = [
+    path('', views.index, name='index'),
     path('admin/', admin.site.urls),
-    path('pybo/', include('pybo.urls'))
+    path('pybo/', include('pybo.urls')),
+    path('common/', include('common.urls')),
 ]
