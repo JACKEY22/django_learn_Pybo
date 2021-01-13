@@ -15,7 +15,13 @@
             {% for question in question_list %}    
             <tr>
                 <td>{{ forloop.counter }}</td>
-                <td><a href="{% url 'pybo:detail' question.id %}">{{question.title}}</a></td>
+                <td>
+                    <a href="{% url 'pybo:detail' question.id %}">{{question.title}}
+                    {% if question.answer_set.count %}
+                        <span class='text-danger small ml-2'>{{ question.answer_set.count }}</span>
+                    {% endif %}
+                    </a>
+                </td>
                 <td>{{question.create_date}}</td>
             </tr>
             {% endfor %}
@@ -26,6 +32,42 @@
             {% endif %}
         </tbody>
     </table>
+    <ul class='pagination justify-content-center'>
+        {% if question_list.has_previous %}
+            <li class='page_item'>
+                <a class='page-link' href='?page={{ question_list.previous_page_number }}'>Pre</a>
+            </li>
+        {% else %}
+            <li class='page-item'>
+                <a class='page-link' tabindex="-1" aria-disabled="true" href="#">Pre</a>
+            </li>
+        {% endif %}
+
+        {% for page_num in question_list.paginator.page_range %}
+            {% if page_num >= start_page and page_num <= end_page %}
+                {% if page_num == question_list.number %}
+                    <li class='page-item active' aria-current="page">
+                        <a class='page-link' href='?page={{ page_num }}'>{{ page_num }}</a>
+                    </li>
+                {% else %}
+                    <li class='page-item'>
+                        <a class='page-link' href='?page={{ page_num }}'>{{ page_num }}</a>
+                    </li>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+
+        {% if question_list.has_next %}
+            <li class='page_item'>
+                <a class='page-link' href='?page={{ question_list.next_page_number }}'>Next</a>
+            </li>
+        {% else %}
+            <li class='page_item'>
+                <a class='page-link' tabindex='-1' aria-disabled='true' href='#'>Next</a>
+            </li>
+        {% endif %}
+    </ul>
+
     <a href="{% url 'pybo:question_create' %}" class="btn btn-primary">질문등록</a>
 </div>
 
