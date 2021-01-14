@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class='container my-3'>
+    <form method="post" class='post-form'>
+        {% csrf_token %}
+        {% include 'error.html' %}
+        <div class="form-group">
+            <label for='content'>content</label>
+            <textarea class='form-control' name="content" id="content"
+                      rows="10">{{ form.content.value|default_if_none:''}}</textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">save</button>
+    </form>
+</div>
+{% endblock %}
+
